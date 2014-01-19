@@ -1,8 +1,6 @@
 /*
 TODO:
 otestovat
-royjet metodu valid
-rozjet metodu validate
 ukladat paramy do pameti uzlu??
 pridat callbacky
 checknout pravidla pro selecty a radia
@@ -135,7 +133,7 @@ parser reg rename
 			//this.clean(elem);
 		},
 
-		isValid: function(value, rule) {
+		isValid: function(value, rule, elem) {
 
 			if(typeof rule === 'undefined') {
 				var elem = value;
@@ -147,7 +145,6 @@ parser reg rename
 			var plugin = this;
 
 			var result = false;
-
 
 			var ruleEscaped = rule.replace(/({{((?!}}).)*}})/g, '{{NOPARSE}}');
 
@@ -184,7 +181,7 @@ parser reg rename
 					} else {*/
 						//console.log(args);
 
-						if(!plugin.validations[args[0]].func(value, args)) {
+						if(!plugin.validations[args[0]].func(value, args, elem)) {
 							resultAnd = false;
 							return;
 						}
@@ -235,11 +232,7 @@ parser reg rename
 			this.clean(elem);
 			conf = this.initInput(elem);
 
-			if(elem.is(':checkbox')) {
-				if(elem.prop('checked')) return this.valid(elem);
-				else return this.invalid(elem);
-			}
-			else if(this.isValid(conf['newString'], conf['strict'])) return this.valid(elem);
+			if(this.isValid(conf['newString'], conf['strict'], elem)) return this.valid(elem);
 			else return this.invalid(elem);
 		},
 
@@ -400,8 +393,8 @@ jQuery.bValidator
 .validation('true', function(value) { 
 	return true;
 })
-.validation('checkbox', function(value) {
-	return true;
+.validation('checkbox', function(value, args, elem) {
+	return $(elem).prop('checked');
 })
 .validation('phone', function(value) {
 	var same = 0;
