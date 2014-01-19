@@ -14,6 +14,12 @@ error hlasky
 
 definovani pravidel pro inputz pomoci trid
 predani nastaveni inputu pomoci configu
+
+destruktor
+refresh
+if:name:rule
+if:name:value:rule
+parser reg rename
 */
 
 (function($) {
@@ -128,11 +134,23 @@ predani nastaveni inputu pomoci configu
 
 		isValid: function(value, rule) {
 
+			if(typeof rule === 'undefined') {
+				var elem = value;
+				var conf = this.initInput(elem);
+				var value = conf['newString'];
+				var rule = conf['strict'];
+			}
+
 			var plugin = this;
 
 			var result = false;
 
-			var rulesOr = rule.split('|');
+
+			var ruleEscaped = rule.replace(/({{((?!}}).)*}})/g, '{{NOPARSE}}');
+
+			var ruleReplacements = rule.match(/({{((?!}}).)*}})/g);
+
+			var rulesOr = ruleEscaped.split('|');
 
 			//rulesAnd.each();
 
@@ -146,10 +164,28 @@ predani nastaveni inputu pomoci configu
 					
 					var args = ruleAnd.split(':');
 
-					if(!plugin.validations[args[0]].func(value, args)) {
-						resultAnd = false;
-						return;
-					}
+					for (var i = 0; i < args.length; i++) {
+						if(args[i].match(/\{\{NOPARSE\}\}/) !== null) {
+							var replacement = ruleReplacements.shift();
+							args[i] = args[i].replace('{{NOPARSE}}', replacement.slice(2, -2));
+						}
+					};
+
+					//console.log(args);
+
+					/*if(typeof this.validations[rule] === 'undefined') {
+						if(value.match(rule) == null) {
+							resultAnd = false;
+							return;
+						}
+					} else {*/
+						//console.log(args);
+
+						if(!plugin.validations[args[0]].func(value, args)) {
+							resultAnd = false;
+							return;
+						}
+					//}
 
 				});
 
@@ -157,9 +193,6 @@ predani nastaveni inputu pomoci configu
 					result = true;
 					return;
 				} 
-
-
-
 
 
 
@@ -181,7 +214,7 @@ predani nastaveni inputu pomoci configu
 
 			return result;
 
-			if(rule.indexOf("\\|") != -1) {
+			/*if(rule.indexOf("\\|") != -1) {
 				if(typeof this.validations[rule] === 'undefined') {
 					return (value.match(rule) != null);
 				}
@@ -192,7 +225,7 @@ predani nastaveni inputu pomoci configu
 					return (value.match(rule) != null);
 				}
 				return this.validations[args[0]].func(value, args);
-			}
+			}*/
 		},
 
 		validate: function(elem) {
@@ -252,11 +285,26 @@ predani nastaveni inputu pomoci configu
 			//elem.parents('.row').addClass('error');
 			//elem.parents('.row').find('.error-message').removeClass('hidden');
 			return false;
+		},
+
+		destruct: function(form) {
+			form.unbind('.bValidator');
 		}
 
 	}
 
 	$.fn.bValidator = function(options) {
+
+		if(typeof options == 'string' && options == 'isValid') {
+			var valid = true;
+			this.each(function() {
+				if(!$.bValidator.isValid($(this))) {
+					valid =  false;
+					return;
+				}
+			});
+			return valid;
+		}
 
 		var settings = $.extend({
 			beforeSubmit: function() {},
@@ -267,10 +315,10 @@ predani nastaveni inputu pomoci configu
 			if(typeof options == 'string') {
 				switch(options) {
 					case 'validate':
-						return $.bValidator.validate(this);
+						return $.bValidator.validate($(this));
 						break;
-					case 'isValid':
-						return $.bValidator.isValid(this);
+					case 'destruct':
+						return $.bValidator.destruct($(this));
 						break;
 					}
 			} else {
@@ -279,8 +327,6 @@ predani nastaveni inputu pomoci configu
 				//else $.bValidator.init($this.find('form'), settings);
 
 				if(!$this.is('form')) $this = $this.find('form');
-
-				//console.log($this);
 
 				return $this.each(function() {
 					$.bValidator.init($(this), settings);
@@ -313,6 +359,9 @@ jQuery.bValidator
 	}
 	return true;
 })
+.validation('empty', function(value) {
+	return (value == ''); 
+})
 .validation('same', function(value, args) {
 	return (value == $('form [name="'+args[1]+'"]').val()); 
 })
@@ -344,7 +393,6 @@ jQuery.bValidator
 	return true;
 })
 .validation('checkbox', function(value) {
-	//console.log(value + 's');
 	return true;
 })
 .validation('phone', function(value) {
@@ -374,7 +422,3 @@ jQuery.bValidator
 .transformation('noSpaces', function(value) {
 	return value.replace(/ /g,'');
 });
-
-
-
-//$('form.big').bValidator();
