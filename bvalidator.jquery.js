@@ -15,8 +15,7 @@ error hlasky
 definovani pravidel pro inputz pomoci trid
 predani nastaveni inputu pomoci configu
 
-destruktor
-refresh
+fix focusout + change
 if:name:rule
 if:name:value:rule
 parser reg rename
@@ -36,9 +35,12 @@ parser reg rename
 		//settings: {},
 
 		init: function(form, settings) {
+			var plugin = this;
+			plugin.destruct(form);
+			
 			form.data('bValidator', settings);
-			plugin = this;
-			inputs = $('input[data-bvString], input[data-bvStrict], textarea', form);
+
+			var inputs = $('input[data-bvString], input[data-bvStrict], textarea', form);
 			inputs.each(function (){
 				$(this).on('focusin.bValidator', function() {
 					plugin.focus($(this));
@@ -48,17 +50,18 @@ parser reg rename
 					plugin.validate($(this));
 				});
 
-				/*$(this).on('change.bValidator', function() {
+				$(this).on('change.bValidator', function() {
 					plugin.validate($(this));
-				});*/
+				});
 				
 				plugin.initInput($(this));
 			});
 
 			//plugin.settings: $.extend({}, defaults, options);
+
 			form.on('submit.bValidator', function(e) {
 				var settings = $(this).data('bValidator');
-				bValid = true;
+				var bValid = true;
 				var inputs = $('input[data-bvString], input[data-bvStrict], textarea', $(this));
 
 				inputs.each(function() {
@@ -171,7 +174,7 @@ parser reg rename
 						}
 					};
 
-					//console.log(args);
+					console.log(args);
 
 					/*if(typeof this.validations[rule] === 'undefined') {
 						if(value.match(rule) == null) {
@@ -289,6 +292,11 @@ parser reg rename
 
 		destruct: function(form) {
 			form.unbind('.bValidator');
+
+			var inputs = $('input[data-bvString], input[data-bvStrict], textarea', form);
+			inputs.unbind('.bValidator');
+
+			form.removeData('bValidator');
 		}
 
 	}
