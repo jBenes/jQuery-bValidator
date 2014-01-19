@@ -14,8 +14,6 @@ definovani pravidel pro inputz pomoci trid
 predani nastaveni inputu pomoci configu
 
 fix focusout + change
-if:name:rule
-if:name:value:rule
 parser reg rename
 */
 
@@ -135,12 +133,16 @@ parser reg rename
 
 		isValid: function(value, rule, elem) {
 
-			if(typeof rule === 'undefined') {
-				var elem = value;
+			if(typeof value === 'undefined') {
 				var conf = this.initInput(elem);
 				var value = conf['newString'];
+			}
+
+			if(typeof rule === 'undefined') {
+				var conf = this.initInput(elem);
 				var rule = conf['strict'];
 			}
+
 
 			var plugin = this;
 
@@ -171,7 +173,11 @@ parser reg rename
 						}
 					};
 
-					console.log(args);
+					/*console.log(args);
+					console.log(value);
+					console.log(rule);
+					console.log(elem);*/
+
 
 					/*if(typeof this.validations[rule] === 'undefined') {
 						if(value.match(rule) == null) {
@@ -294,12 +300,15 @@ parser reg rename
 
 	}
 
-	$.fn.bValidator = function(options) {
+	$.fn.bValidator = function(options, args) {
 
 		if(typeof options == 'string' && options == 'isValid') {
 			var valid = true;
 			this.each(function() {
-				if(!$.bValidator.isValid($(this))) {
+				if(typeof args === 'undefined') {
+					args = Array();
+				}
+				if(!$.bValidator.isValid(undefined, args[0], $(this))) {
 					valid =  false;
 					return;
 				}
@@ -363,6 +372,17 @@ jQuery.bValidator
 .validation('empty', function(value) {
 	return (value == ''); 
 })
+.validation('if', function(value, args, elem) {
+	// arg[0] = rule name -> if
+	// arg[1] = name of other input
+	// arg[2] = name of other input rule
+	// arg[3] = name of current input rule
+	var input = elem.parents('form').find('[name="'+args[1]+'"]');
+	if(input.bValidator('isValid', Array(args[2]))) {
+		return (elem.bValidator('isValid', Array(args[3])));
+	} else return true;
+
+})
 .validation('same', function(value, args) {
 	return (value == $('form [name="'+args[1]+'"]').val()); 
 })
@@ -393,7 +413,7 @@ jQuery.bValidator
 .validation('true', function(value) { 
 	return true;
 })
-.validation('checkbox', function(value, args, elem) {
+.validation('checked', function(value, args, elem) {
 	return $(elem).prop('checked');
 })
 .validation('phone', function(value) {
