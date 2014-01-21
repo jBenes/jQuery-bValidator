@@ -1,4 +1,6 @@
 /*
+url: https://github.com/jBenes/bSlider
+
 TODO:
 otestovat
 ukladat paramy do pameti uzlu??
@@ -30,54 +32,79 @@ parser reg rename
 
 		//settings: {},
 
+		/**
+		 * Bings input and form actions, initialises input values, stores settings into form node
+		 *
+		 * @param form element
+		 * @param json settings
+		 * @return void
+		 */
 		init: function(form, settings) {
 			var plugin = this;
+			// clear plugin bindings and data in order not to have double bindings
 			plugin.destruct(form);
-			
+			// store settings to form node
 			form.data('bValidator', settings);
-
+			// choose elements which should be validated
 			var inputs = $('input[data-bvString], input[data-bvStrict], textarea', form);
 			inputs.each(function (){
+				// bind focus in function
 				$(this).on('focusin.bValidator', function() {
 					plugin.focus($(this));
 				});
-
+				// bind focus out
 				$(this).on('focusout.bValidator', function() {
 					plugin.validate($(this));
 				});
-
+				// bind change - for checkboxes, selects.
+				// TODO: exclude these elements from focus out, now we have double bindings for text based inputs
 				$(this).on('change.bValidator', function() {
 					plugin.validate($(this));
 				});
-				
+				// initialize elements - apply transformations, pendings
 				plugin.initInput($(this));
 			});
 
 			//plugin.settings: $.extend({}, defaults, options);
 
+			// bind before submit validations 
 			form.on('submit.bValidator', function(e) {
+				// obtain settings from form node
 				var settings = $(this).data('bValidator');
+				// assume that form is valid
 				var bValid = true;
+				// choose elements which should be validated
 				var inputs = $('input[data-bvString], input[data-bvStrict], textarea', $(this));
-
+				// validate all inputs
 				inputs.each(function() {
+					// if input is invalid, remember it for breaking submitting form later
 					if(!plugin.validate($(this))) bValid = false;
 				});
-
+				// if form is invalid
 				if(!bValid) {
+					// call submitFail callback
 					settings.onSubmitFail.call( this, e );
+					// and forbit submitting form
 					e.preventDefault();
+				/// if form is valid
 				} else {
+					// for each input apply focus action -> pendigs are stripped
 					inputs.each(function() {
 						plugin.focus($(this));
 					});
-					//console.log(settings);
+					// and call beforeSubmit callback
 					settings.beforeSubmit.call( this, this, e );
 				}
 			});
 
 		},
 
+		/**
+		 * Parses input value, gets input config based on attributes
+		 *
+		 * @param input element
+		 * @return input config
+		 */
 		getConfig: function(elem) {
 			conf = {};
 			// switch value - erase inputs with this value. Fill value of empty inputs on focus out 
@@ -103,19 +130,34 @@ parser reg rename
 			return conf;
 		},
 
+		/**
+		 * Initialise input value - applies transformations, switchval, default val, pendings
+		 *
+		 * @param input element
+		 * @return input config
+		 */
 		initInput: function(elem) {
+			// get input clean value, input config 
 			conf = this.getConfig(elem);
-
+			// fix prepend escape chars
 			conf['prepend'] = conf['prepend'].replace(/\\|\?/g,'');
+			// fix append escape chars
 			conf['append'] = conf['append'].replace(/\\|\?/g,'');
+			// if element value is empty
 			if(!elem.val() || elem.val() == conf['empty'] || conf['newString'] == '') { 
+				// and if both switchval and empty val are empty, add pendings
 				if(conf['empty'] == '' && conf['switchVal'] == '') elem.val(conf['prepend']+conf['append']);
+				// else if switchval is empty, apply Empty value
 				else if(conf['switchVal'] == '') elem.val(conf['empty']);
+				// otherwise add switchval value
 				else elem.val(conf['switchVal']);
 				//elem.addClass('grey');
 			}
+			// if value is not empty
 			else {
+				// apply transformation
 				if(conf['transform']) conf['newString'] = this.transform(conf['newString'], conf['transform']);
+				// and set value with pendings
 				elem.val(conf['prepend']+conf['newString']+conf['append']);
 				//elem.removeClass('grey');
 			}
@@ -173,65 +215,22 @@ parser reg rename
 						}
 					};
 
-					/*console.log(args);
-					console.log(value);
-					console.log(rule);
-					console.log(elem);*/
-
-
-					/*if(typeof this.validations[rule] === 'undefined') {
-						if(value.match(rule) == null) {
-							resultAnd = false;
-							return;
-						}
-					} else {*/
-						//console.log(args);
-
-						if(!plugin.validations[args[0]].func(value, args, elem)) {
-							resultAnd = false;
-							return;
-						}
-					//}
+					if(!plugin.validations[args[0]].func(value, args, elem)) {
+						resultAnd = false;
+						return;
+					}
 
 				});
 
 				if(resultAnd == true) {
 					result = true;
 					return;
-				} 
-
-
-
-				/*var args = ruleOr.split(':');
-
-				if(plugin.validations[args[0]].func(value, args)) {
-					result = true;
-					return;
 				}
-				console.log(args);*/
-				//console.log(val);
-
-				//console.log(rulesAnd);
 				
 			});
 
-			//console.log(rulesAnd);
-
-
 			return result;
 
-			/*if(rule.indexOf("\\|") != -1) {
-				if(typeof this.validations[rule] === 'undefined') {
-					return (value.match(rule) != null);
-				}
-				return this.validations[rule].func(value);	
-			} else {
-				var args = rule.split('|');
-				if(typeof this.validations[args[0]] === 'undefined') {
-					return (value.match(rule) != null);
-				}
-				return this.validations[args[0]].func(value, args);
-			}*/
 		},
 
 		validate: function(elem) {
