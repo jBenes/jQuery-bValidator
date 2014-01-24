@@ -382,6 +382,16 @@ jQuery.bValidator
 	} else return true;
 
 })
+.validation('ifv', function(value, args, elem) {
+	// arg[0] = rule name -> ifv
+	// arg[1] = name of other input
+	// arg[2] = value of other input rule
+	// arg[3] = name of current input rule
+	if(elem.parents('form').find('[name="'+args[1]+'"]').val() == args[2]) {
+		return (elem.bValidator('isValid', Array(args[3])));
+	} else return true;
+
+})
 .validation('same', function(value, args) {
 	return (value == $('form [name="'+args[1]+'"]').val()); 
 })

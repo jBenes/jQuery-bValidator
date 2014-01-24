@@ -87,13 +87,13 @@ If regular expression contains **|** or **&**, it has to be inside double bracke
 
 	data-bvStrict="reg:{{^him|her$}}"
 
-*** Connected rules ***
+### Connected rules ###
 
 Input has to have same value as input with name **password**
 
 	data-bvStrict="same:password"
 
-*** Conditions ***
+### Conditions ###
 
 If input with name **service** is valid by rule **checked**, rule validates input by rule **email**
 If **service** is not valid, rule returns **true**
@@ -106,7 +106,16 @@ Adding regular expression rule. Whole rule has to be inside double brackets **{{
 
 	data-bvStrict="if:type:{{reg:^4$}}:email"
 
-*** Combinating rules ***
+If input with name **service** has value **4**, rule validates input by rule **email**
+If **service** is not valid, rule returns **true**
+	
+	data-bvStrict="ifv:service:4:email"
+
+This does the same as
+	
+	data-bvStrict="if:service:{{reg:^4$}}:email"
+
+### Combinating rules ###
 
 Input has to be phone or email
 	
