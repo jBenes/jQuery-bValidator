@@ -51,7 +51,8 @@ parser reg rename
 				var input = $(this);
 				// bind focus in function
 				input.on('focusin.bValidator', function() {
-					plugin.focus($(this));
+					var settings = $(this).parents('form').data('bValidator');
+					plugin.focus($(this), settings.onFocusHideError);
 				});
 
 				// choose event for binding validation action - change for checkboxes and selects. Other inputs focusout
@@ -64,7 +65,7 @@ parser reg rename
 					plugin.validate($(this));
 				});
 
-				if(settings.keyUpValidation) {
+				if(settings.onKeyUpValidate) {
 					input.on('keyup.bValidator', function() {
 						plugin.validate($(this));
 					});
@@ -173,13 +174,16 @@ parser reg rename
 			return conf;
 		},
 
-		focus: function(elem) {
+		focus: function(elem, clean) {
 			conf = this.getConfig(elem);
 
 			if(elem.val() == conf['switchVal']) elem.val('');
 			else elem.val($.trim(conf['newString']));
 			//elem.removeClass('grey');
-			//this.clean(elem);
+			// hide error after focusing element
+			if(typeof clean !== 'undefined' && clean) {
+ 				this.clean(elem);
+ 			}
 		},
 
 		isValid: function(value, rule, elem) {
@@ -325,7 +329,8 @@ parser reg rename
 		}
 
 		var settings = $.extend({
-			keyUpValidation: false,
+			onFocusHideError: false, // TODO: little overhead, lookup for settings after each validation
+			onKeyUpValidate: false,
 			beforeSubmit: function() {},
 			onSubmitFail: function() {}
 		}, options );
