@@ -9,10 +9,16 @@ jQuery form validator
 	
 	$('form').bValidator();
 
+### Default options ###
+	
+	keyUpValidation: 	false, 			// When true, add extra on key up validation
+	beforeSubmit: 		function() {},	// Function to fire before submitting valid form
+	onSubmitFail: 		function() {}	// Function to fire when validation after submitting form fails
 
 ### Init form with submit callbacks: ###
 	
 	$('form').bValidator({
+		keyUpValidation: true,
 	    onSubmitFail: function(form, e) {
 	        console.log('Some inputs are not valid');
 	    },

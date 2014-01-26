@@ -48,21 +48,30 @@ parser reg rename
 			// choose elements which should be validated
 			var inputs = $('input[data-bvString], input[data-bvStrict], textarea', form);
 			inputs.each(function (){
+				var input = $(this);
 				// bind focus in function
-				$(this).on('focusin.bValidator', function() {
+				input.on('focusin.bValidator', function() {
 					plugin.focus($(this));
 				});
-				// bind focus out
-				$(this).on('focusout.bValidator', function() {
+
+				// choose event for binding validation action - change for checkboxes and selects. Other inputs focusout
+				var method = 'focusout';
+				if(input.is('select, input[type="checkbox"], input[type="radio"]')) {
+					method = 'change';
+				}
+				// bind validation event
+				input.on(method+'.bValidator', function() {
 					plugin.validate($(this));
 				});
-				// bind change - for checkboxes, selects.
-				// TODO: exclude these elements from focus out, now we have double bindings for text based inputs
-				$(this).on('change.bValidator', function() {
-					plugin.validate($(this));
-				});
+
+				if(settings.keyUpValidation) {
+					input.on('keyup.bValidator', function() {
+						plugin.validate($(this));
+					});
+				}
+
 				// initialize elements - apply transformations, pendings
-				plugin.initInput($(this));
+				plugin.initInput(input);
 			});
 
 			//plugin.settings: $.extend({}, defaults, options);
@@ -316,6 +325,7 @@ parser reg rename
 		}
 
 		var settings = $.extend({
+			keyUpValidation: false,
 			beforeSubmit: function() {},
 			onSubmitFail: function() {}
 		}, options );
