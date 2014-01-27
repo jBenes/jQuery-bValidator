@@ -2,29 +2,33 @@
 url: https://github.com/jBenes/bSlider
 
 TODO:
-otestovat
-ukladat paramy do pameti uzlu??
-pridat callbacky
-checknout pravidla pro selecty a radia
+callbacks - focus, focus out, on error, on valid
+custom classes
+test checkbox and select rules
+add element, which will be shown for valid rows
 
-custom classy
-zmena DOMu
-dogenerovani hlasek
-error hlasky
+DOCS:
+show html examples
+explain difference between row and direct dom
 
-definovani pravidel pro inputz pomoci trid
-predani nastaveni inputu pomoci configu
+IMPLEMENT?
+custom cleant, valid and invalid functions
+options - disable error and valid action
 
-fix focusout + change
-parser reg rename
+DONE:
+DOM choices - row or name based
+
+REJECTED:
+generate error messages
+setting rules by classes
+setting rules for inputs in options
 */
 
 (function($) {
 
 	$.bValidator = {
 
-		defaults: {
-		},
+		defaults: {},
 
 		validations: {},
 
@@ -52,7 +56,7 @@ parser reg rename
 				// bind focus in function
 				input.on('focusin.bValidator', function() {
 					var settings = $(this).parents('form').data('bValidator');
-					plugin.focus($(this), settings.onFocusHideError);
+					plugin.focus($(this), settings);
 				});
 
 				// choose event for binding validation action - change for checkboxes and selects. Other inputs focusout
@@ -174,15 +178,15 @@ parser reg rename
 			return conf;
 		},
 
-		focus: function(elem, clean) {
+		focus: function(elem, settings) {
 			conf = this.getConfig(elem);
 
 			if(elem.val() == conf['switchVal']) elem.val('');
 			else elem.val($.trim(conf['newString']));
 			//elem.removeClass('grey');
 			// hide error after focusing element
-			if(typeof clean !== 'undefined' && clean) {
- 				this.clean(elem);
+			if(typeof settings.onFocusHideError !== 'undefined' && settings.onFocusHideError) {
+ 				this.clean(elem, settings);
  			}
 		},
 
@@ -247,11 +251,12 @@ parser reg rename
 		},
 
 		validate: function(elem) {
-			this.clean(elem);
+			var settings = elem.parents('form').data('bValidator');
+			this.clean(elem, settings);
 			conf = this.initInput(elem);
 
-			if(this.isValid(conf['newString'], conf['strict'], elem)) return this.valid(elem);
-			else return this.invalid(elem);
+			if(this.isValid(conf['newString'], conf['strict'], elem)) return this.valid(elem, settings);
+			else return this.invalid(elem, settings);
 		},
 
 		validation: function() {
@@ -274,30 +279,39 @@ parser reg rename
 			return this;
 		},
 
-		clean: function(elem) {
-			elem.removeClass('error').removeClass('valid');
-			elem.parents('.row').find('.bverror-'+elem.attr('name')).removeClass('error').removeClass('valid');
-			elem.parents('.row').find('label[for="'+elem.attr('name')+'"]').removeClass('error').removeClass('valid');
-			//elem.parents('.row').removeClass('error').removeClass('valid');
+		clean: function(elem, settings) {
+			if(settings.domType == 'direct') {
+				elem.removeClass('error').removeClass('valid');
+				elem.parents('.row').find('.bverror-'+elem.attr('name')).removeClass('error').removeClass('valid');
+				elem.parents('.row').find('label[for="'+elem.attr('name')+'"]').removeClass('error').removeClass('valid');
+			} else {
+				elem.parents('.row').removeClass('error').removeClass('valid');
+			}
 		},
 
-		valid: function(elem) {
-			elem.addClass('valid');
-			elem.parents('.row').find('.bverror-'+elem.attr('name')).addClass('valid');
-			elem.parents('.row').find('label[for="'+elem.attr('name')+'"]').addClass('valid');
+		valid: function(elem, settings) {
+			if(settings.domType == 'direct') {
+				elem.addClass('valid');
+				elem.parents('.row').find('.bverror-'+elem.attr('name')).addClass('valid');
+				elem.parents('.row').find('label[for="'+elem.attr('name')+'"]').addClass('valid');
+			} else {
+				elem.parents('.row').addClass('valid');
+				elem.parents('.row').find('.error-message').addClass('hidden');
+			}
 
-			//elem.parents('.row').addClass('valid');
-			//elem.parents('.row').find('.error-message').addClass('hidden');
 			return true;
 		},
 
-		invalid: function(elem) {
-			elem.addClass('error');
-			elem.parents('.row').find('.bverror-'+elem.attr('name')).addClass('error');
-			elem.parents('.row').find('label[for="'+elem.attr('name')+'"]').addClass('error');
+		invalid: function(elem, settings) {
+			if(settings.domType == 'direct') {
+				elem.addClass('error');
+				elem.parents('.row').find('.bverror-'+elem.attr('name')).addClass('error');
+				elem.parents('.row').find('label[for="'+elem.attr('name')+'"]').addClass('error');
+			} else {
+				elem.parents('.row').addClass('error');
+				elem.parents('.row').find('.error-message').removeClass('hidden');
+			}
 
-			//elem.parents('.row').addClass('error');
-			//elem.parents('.row').find('.error-message').removeClass('hidden');
 			return false;
 		},
 
@@ -331,6 +345,7 @@ parser reg rename
 		var settings = $.extend({
 			onFocusHideError: false, // TODO: little overhead, lookup for settings after each validation
 			onKeyUpValidate: false,
+			domType: 'row', // other options: 'direct'
 			beforeSubmit: function() {},
 			onSubmitFail: function() {}
 		}, options );

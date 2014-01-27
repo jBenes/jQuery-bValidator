@@ -11,16 +11,18 @@ jQuery form validator
 
 ### Default options ###
 	
-	onFocusHideError: 	false,			// Hide error after focusing input
-	onKeyUpValidate: 	false, 			// When true, add extra on key up validation
-	beforeSubmit: 		function() {},	// Function to fire before submitting valid form
+	onFocusHideError: 	false			// Hide error after focusing input
+	onKeyUpValidate: 	false 			// When true, add extra on key up validation
+	domType:			'row'			// other options: 'direct'; Explanation will be written later :/
+	beforeSubmit: 		function() {}	// Function to fire before submitting valid form
 	onSubmitFail: 		function() {}	// Function to fire when validation after submitting form fails
 
 ### Init form with all options: ###
 	
 	$('form').bValidator({
-		onFocusHideError: false,
+		onFocusHideError: false, // no reason to allow in combination with onKeyUpValidate = true
 		onKeyUpValidate: true,
+		domType: 'direct',
 	    onSubmitFail: function(form, e) {
 	        console.log('Some inputs are not valid');
 	    },
