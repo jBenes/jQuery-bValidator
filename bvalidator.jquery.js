@@ -6,6 +6,7 @@ callbacks - focus, focus out, on error, on valid
 custom classes
 test checkbox and select rules
 add element, which will be shown for valid rows
+add valid element for direct dom
 
 DOCS:
 show html examples
@@ -282,8 +283,8 @@ setting rules for inputs in options
 		clean: function(elem, settings) {
 			if(settings.domType == 'direct') {
 				elem.removeClass('error').removeClass('valid');
-				elem.parents('.row').find('.bverror-'+elem.attr('name')).removeClass('error').removeClass('valid');
-				elem.parents('.row').find('label[for="'+elem.attr('name')+'"]').removeClass('error').removeClass('valid');
+				elem.parents('form').find('.error-'+elem.attr('name')).removeClass('error').removeClass('valid');
+				elem.parents('form').find('label[for="'+elem.attr('name')+'"]').removeClass('error').removeClass('valid');
 			} else {
 				elem.parents('.row').removeClass('error').removeClass('valid');
 			}
@@ -292,8 +293,8 @@ setting rules for inputs in options
 		valid: function(elem, settings) {
 			if(settings.domType == 'direct') {
 				elem.addClass('valid');
-				elem.parents('.row').find('.bverror-'+elem.attr('name')).addClass('valid');
-				elem.parents('.row').find('label[for="'+elem.attr('name')+'"]').addClass('valid');
+				elem.parents('form').find('.error-'+elem.attr('name')).addClass('valid');
+				elem.parents('form').find('label[for="'+elem.attr('name')+'"]').addClass('valid');
 			} else {
 				elem.parents('.row').addClass('valid');
 				elem.parents('.row').find('.error-message').addClass('hidden');
@@ -305,8 +306,8 @@ setting rules for inputs in options
 		invalid: function(elem, settings) {
 			if(settings.domType == 'direct') {
 				elem.addClass('error');
-				elem.parents('.row').find('.bverror-'+elem.attr('name')).addClass('error');
-				elem.parents('.row').find('label[for="'+elem.attr('name')+'"]').addClass('error');
+				elem.parents('form').find('.error-'+elem.attr('name')).addClass('error');
+				elem.parents('form').find('label[for="'+elem.attr('name')+'"]').addClass('error');
 			} else {
 				elem.parents('.row').addClass('error');
 				elem.parents('.row').find('.error-message').removeClass('hidden');

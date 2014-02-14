@@ -13,7 +13,7 @@ jQuery form validator
 	
 	onFocusHideError: 	false			// Hide error after focusing input
 	onKeyUpValidate: 	false 			// When true, add extra on key up validation
-	domType:			'row'			// other options: 'direct'; Explanation will be written later :/
+	domType:			'row'			// other options: 'direct'. Explained below
 	beforeSubmit: 		function() {}	// Function to fire before submitting valid form
 	onSubmitFail: 		function() {}	// Function to fire when validation after submitting form fails
 
@@ -34,6 +34,46 @@ jQuery form validator
 ### Remove validations: ###
 
 	$('form').bValidator('destruct');
+
+## HTML structure ##
+
+You can choose html structure from two types (by **domType** option). In both cases, validation rules and other behavior is set by html data attributes.
+
+### Row structure ###
+
+	<form>
+		<div class="row"> // this element can be span or any other
+			<input type="text" data-bvStrict="rule">
+			<span class="error-class">Input is not valid</span>
+		</div>
+		<div class="row">
+			<input type="text" data-bvStrict="rule">
+			<span class="error-class">Input is not valid</span>
+			<span class="valid-class">Input is valid</span>
+		</div>
+	</form>
+
+If input is invalid, validator adds **error** class to a .row element.
+If input is valid, validator adds **valid** class to a .row element.
+You can name classes for error/valid messages by your desire, but remember to give it 'display: none' property and change it via rows .error/.valid classes.
+HTML structure doesn't have to be flat, you can inputs and messages wrap into another elements.
+
+### Direct structure ###
+
+	<form>
+		<label for="input1">First input</label>
+		<input type="text" name="input1" data-bvStrict="rule">
+		<span class="error-input1">First Input is not valid</span>
+
+		<label for="input2">Second input</label>
+		<input type="text" name="input2" data-bvStrict="rule">
+		<span class="error-input2">Second Input is not valid</span>
+	</form>
+
+If input is invalid, validator adds **error** class to an input, inputs label and error message associated by its name
+If input is valid, validator adds **valid** class to an input, inputs label and error message associated by its name
+HTML structure doesn't have to be flat, you can inputs, labels and messages wrap into another elements.
+Validator searches for labels and error messages only inside form element.
 
 ## Working with inputs ##
 
@@ -150,19 +190,19 @@ You can combine rules as you want
 
 ### Other input attributes: ###
 
-Add prefix to value. It's removed before submitting form
+Add prefix to value. It's removed before submitting form or after focusing input.
 	
 	data-bvPrepend="\+420 "
 
-Add prefix to value. It's removed before submitting form
+Add prefix to value. It's removed before submitting form or after focusing input.
 
 	data-bvAppend=" kW"
 
-Placeholder
+Placeholder. It's removed before submitting form or after focusing input.
 
 	data-bvSwitch="Fill name"
 
-Sets value to "@", if input is empty
+Sets value to "@", if input is empty. It's removed before submitting form or after focusing input.
 
 	data-bvEmpty="@"
 
