@@ -23,12 +23,12 @@ jQuery form validator
 		onFocusHideError: false, // no reason to allow in combination with onKeyUpValidate = true
 		onKeyUpValidate: true,
 		domType: 'direct',
-	    onSubmitFail: function(form, e) {
-	        console.log('Some inputs are not valid');
-	    },
-	    beforeSubmit: function(form, e) {
-	        console.log('Validation success');
-	    }
+		onSubmitFail: function(form, e) {
+			console.log('Some inputs are not valid');
+		},
+		beforeSubmit: function(form, e) {
+			console.log('Validation success');
+		}
 	});
 
 ### Remove validations: ###
@@ -229,7 +229,7 @@ Validate with different rule
 ## Custom rules ##
 
 	jQuery.bValidator.validation('rule_name', function(value, args, elem) {
-	    return true/false;
+		return true/false;
 	});
 
 ## Custom transformer ##

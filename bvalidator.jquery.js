@@ -10,7 +10,6 @@ add valid element for direct dom
 
 DOCS:
 show html examples
-explain difference between row and direct dom
 
 IMPLEMENT?
 custom cleant, valid and invalid functions
