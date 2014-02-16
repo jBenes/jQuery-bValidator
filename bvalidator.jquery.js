@@ -2,7 +2,7 @@
 url: https://github.com/jBenes/bSlider
 
 TODO:
-callbacks - focus, focus out, on error, on valid
+callbacks - focus, focus out
 custom classes
 test checkbox and select rules
 add element, which will be shown for valid rows
@@ -97,7 +97,7 @@ setting rules for inputs in options
 				// if form is invalid
 				if(!bValid) {
 					// call submitFail callback
-					settings.onSubmitFail.call( this, e );
+					settings.onSubmitFail.call( this, this, settings, e );
 					// and forbit submitting form
 					e.preventDefault();
 				/// if form is valid
@@ -107,7 +107,7 @@ setting rules for inputs in options
 						plugin.focus($(this), settings);
 					});
 					// and call beforeSubmit callback
-					settings.beforeSubmit.call( this, this, e );
+					settings.beforeSubmit.call( this, this, settings, e );
 				}
 			});
 
@@ -258,12 +258,13 @@ setting rules for inputs in options
 		},
 
 		validate: function(elem) {
-			var settings = elem.parents('form').data('bValidator');
+			var form = elem.parents('form');
+			var settings = form.data('bValidator');
 			this.clean(elem, settings);
 			conf = this.initInput(elem);
 
-			if(this.isValid(conf['newString'], conf['strict'], elem)) return this.valid(elem, settings);
-			else return this.invalid(elem, settings);
+			if(this.isValid(conf['newString'], conf['strict'], elem)) return this.valid(form, settings, elem);
+			else return this.invalid(form, settings, elem);
 		},
 
 		validation: function() {
@@ -296,28 +297,32 @@ setting rules for inputs in options
 			}
 		},
 
-		valid: function(elem, settings) {
+		valid: function(form, settings, elem) {
 			if(settings.domType == 'direct') {
 				elem.addClass('valid');
-				elem.parents('form').find('.error-'+elem.attr('name')).addClass('valid');
-				elem.parents('form').find('label[for="'+elem.attr('name')+'"]').addClass('valid');
+				form.find('.error-'+elem.attr('name')).addClass('valid');
+				form.find('label[for="'+elem.attr('name')+'"]').addClass('valid');
 			} else {
 				elem.parents('.row').addClass('valid');
 				elem.parents('.row').find('.error-message').addClass('hidden');
 			}
 
+			settings.onValid.call( this, form, settings, elem );
+
 			return true;
 		},
 
-		invalid: function(elem, settings) {
+		invalid: function(form, settings, elem) {
 			if(settings.domType == 'direct') {
 				elem.addClass('error');
-				elem.parents('form').find('.error-'+elem.attr('name')).addClass('error');
-				elem.parents('form').find('label[for="'+elem.attr('name')+'"]').addClass('error');
+				form.find('.error-'+elem.attr('name')).addClass('error');
+				form.find('label[for="'+elem.attr('name')+'"]').addClass('error');
 			} else {
 				elem.parents('.row').addClass('error');
 				elem.parents('.row').find('.error-message').removeClass('hidden');
 			}
+
+			settings.onInvalid.call( this, form, settings, elem );
 
 			return false;
 		},
@@ -353,6 +358,8 @@ setting rules for inputs in options
 			onFocusHideError: false, // TODO: little overhead, lookup for settings after each validation
 			onKeyUpValidate: false,
 			domType: 'row', // other options: 'direct'
+			onValid: function() {},
+			onInvalid: function() {},
 			beforeSubmit: function() {},
 			onSubmitFail: function() {}
 		}, options );
