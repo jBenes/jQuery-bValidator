@@ -104,7 +104,7 @@ setting rules for inputs in options
 				} else {
 					// for each input apply focus action -> pendigs are stripped
 					inputs.each(function() {
-						plugin.focus($(this));
+						plugin.focus($(this), settings);
 					});
 					// and call beforeSubmit callback
 					settings.beforeSubmit.call( this, this, e );
@@ -120,6 +120,7 @@ setting rules for inputs in options
 		 * @return input config
 		 */
 		getConfig: function(elem) {
+			var val = elem.val();
 			conf = {};
 			// switch value - erase inputs with this value. Fill value of empty inputs on focus out 
 			conf['switchVal'] = (elem.attr('data-bvSwitch') == undefined ? '' : elem.attr('data-bvSwitch'));
@@ -132,10 +133,16 @@ setting rules for inputs in options
 			// string transformation
 			conf['transform'] = (elem.attr('data-bvTransform') == undefined ? '' : elem.attr('data-bvTransform'));
 			// pattern for regexp
-			var pattern = '('+conf['prepend']+')?'+'('+conf['string']+')('+conf['append']+')?'+'';
+			var pattern = '^.*('+conf['append']+')$';
+			var re = new RegExp(pattern, 'i');
+			var mand = '?';
+			if(val.match(re) != null && val.match(re)[1] != '') mand = '';
+			var pattern = '^('+conf['prepend']+')?'+'('+conf['string']+')('+conf['append']+')'+mand+'$';
 			var re = new RegExp(pattern, 'i');
 			// new string value
-			conf['newString'] = elem.val().match(re)[2];
+			conf['newString'] = val.match(re)[2];
+
+			if(conf['switchVal'] == conf['newString']) conf['newString'] = '';
 			// string which fill for empty inputs
 			conf['empty'] = (elem.attr('data-bvEmpty') == undefined ? '' : elem.attr('data-bvEmpty'));
 			// rules for real validation
@@ -185,7 +192,7 @@ setting rules for inputs in options
 			else elem.val($.trim(conf['newString']));
 			//elem.removeClass('grey');
 			// hide error after focusing element
-			if(typeof settings.onFocusHideError !== 'undefined' && settings.onFocusHideError) {
+			if(settings.onFocusHideError) {
  				this.clean(elem, settings);
  			}
 		},

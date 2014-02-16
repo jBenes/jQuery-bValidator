@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title></title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="./css/bootstrap.css">
+		<link rel="stylesheet" href="./css/main.css">
+	</head>
+	<body>
+		<!--[if lt IE 7]>
+			<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+		<![endif]-->
+		<div class="container">
+
+			<form action="" id="form-row">
+				<h2>Form with row structure</h2>
+				<div class="row form-group">
+					<label for="input0">Name</label>
+					<input class="form-control" name="input0" type="text" data-bvStrict="string" data-bvSwitch="Fill your name">
+					<div class="help-block error-message">Fill your name</div>
+				</div>
+				<div class="row form-group">
+					<label for="input1">E-mail address</label>
+					<input class="form-control" name="input1" type="text" data-bvStrict="email" data-bvEmpty="@">
+					<div class="help-block error-message">Fill valid e-mail address</div>
+				</div>
+				<div class="row form-group">
+					<label for="input2">Number >= 10</label>
+					<input class="form-control" name="input2" type="text" data-bvStrict="number:10">
+					<span class="help-block error-message">Fill number > 10</span>
+					<span class="help-block valid-message">Number is ok</span>
+				</div>
+				<div class="row checkbox">
+					<label for="car">
+						<input type="checkbox" name="car"> Do you have a car?
+					</label>
+				</div>
+				<div class="row form-group">
+					<label for="input5">Power</label>
+					<input class="form-control" name="input5" type="text" data-bvStrict="if:car:checked:number" data-bvAppend=" kW">
+					<span class="help-block error-message">Fill power of your car, if have one</span>
+				</div>
+				<div class="row form-group">
+					<label for="input3">Password</label>
+					<input class="form-control" name="input3" type="password" data-bvStrict="reg:^.{5,}">
+					<span class="help-block error-message">Password must have at least 5 letters</span>
+				</div>
+				<div class="row form-group">
+					<label for="input4">Password again</label>
+					<input class="form-control" name="input4" type="password" data-bvStrict="same:input3">
+					<span class="help-block error-message">Password does not match</span>
+				</div>
+				<div class="row checkbox">
+					<label for="cond">
+						<input type="checkbox" name="cond" data-bvStrict="checked"> Checkbox
+						<span class="help-block error-message">You have to check me</span>
+					</label>
+				</div>
+				<button type="submit" class="btn btn-default">Submit</button>
+			</form>
+
+			<form action="" id="form-direct">
+				<h2>Form with direct structure</h2>
+
+				<label for="input1">E-mail or phone (Czech localization - 9 digits)</label>
+				<input class="form-control" name="input1" type="text" data-bvStrict="email|phone">
+
+				<label for="input2">Number or nothing</label>
+				<input class="form-control" name="input2" type="text" data-bvStrict="number|empty">
+
+				<label for="input3">Write some sentence</label>
+				<input class="form-control" name="input3" type="text" data-bvStrict="true" data-bvTransform="noSpaces">
+
+				<div class="row checkbox">
+					<label for="cond">
+						<input type="checkbox" name="cond" data-bvStrict="checked"> Checkbox
+					</label>
+				</div>
+
+				<button type="submit" class="btn btn-default">Submit</button>
+				
+				<div class="help-block error-message error-input1">Fill e-mail or phone</div>
+				<span class="help-block error-message error-input2">Number is not valid</span>
+				<span class="help-block error-message error-cond">You have to check it</span>
+			</form>
+
+		</div>
+
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+		<script src="../bvalidator.jquery.js"></script>
+
+		<script type="text/javascript">
+			$(function(){
+				$('#form-row').bValidator();
+
+				$('#form-direct').bValidator({
+					onFocusHideError: 	true,
+					domType: 			'direct',
+					beforeSubmit: 		function() {
+						alert('Form is valid');
+					},
+					onSubmitFail:       function() {
+						alert('Form is NOT valid');
+					}
+				});
+			});
+		</script>
+	</body>
+</html>

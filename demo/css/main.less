@@ -1,0 +1,71 @@
+form {
+	margin-bottom: 80px;
+
+	.help-block {
+		display: none;
+
+		&.error-message {
+			color: #a94442;
+
+			&.error {
+				display: block;
+			}
+		}
+
+		&.valid-message {
+			color: #3c763d;
+		}
+	}
+
+	.row {
+		margin-left: 0;
+
+		&.error {
+			.error-message {
+				display: block;
+			}
+
+			label {
+				color: #a94442;
+			}
+
+			input {
+				border-color: #a94442;
+			}
+		}
+
+		&.valid {
+			.valid-message {
+				display: block;
+			}
+
+			label {
+				color: #3c763d;
+			}
+
+			input {
+				border-color: #3c763d;
+			}
+		}
+	}
+
+	input {
+		&.error {
+			border-color: #a94442;
+		}
+
+		&.valid {
+			border-color: #3c763d;
+		}
+	}
+
+	label {
+		&.error {
+			color: #a94442;
+		}
+
+		&.valid {
+			color: #3c763d;
+		}
+	}
+}
