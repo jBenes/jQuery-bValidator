@@ -102,16 +102,16 @@
 				$('#form-direct').bValidator({
 					onFocusHideError: 	true,
 					domType: 			'direct',
-					onValid: 			function(form, settings, element) {
+					onValid: 			function(form, element) {
 						console.log('Input with name ' + element.attr('name') + ' is valid');
 					},
-					onInvalid:       	function(form, settings, element) {
+					onInvalid:       	function(form, element) {
 						console.log('Input with name ' + element.attr('name') + ' is invalid');
 					},
-					beforeSubmit: 		function(form, settings, event) {
+					beforeSubmit: 		function(form, event) {
 						alert('Form is valid');
 					},
-					onSubmitFail:       function(form, settings, event) {
+					onSubmitFail:       function(form, event) {
 						alert('Form is NOT valid');
 					}
 				});

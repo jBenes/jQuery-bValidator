@@ -97,7 +97,7 @@ setting rules for inputs in options
 				// if form is invalid
 				if(!bValid) {
 					// call submitFail callback
-					settings.onSubmitFail.call( this, this, settings, e );
+					settings.onSubmitFail.call( this, this, e );
 					// and forbit submitting form
 					e.preventDefault();
 				/// if form is valid
@@ -107,7 +107,7 @@ setting rules for inputs in options
 						plugin.focus($(this), settings);
 					});
 					// and call beforeSubmit callback
-					settings.beforeSubmit.call( this, this, settings, e );
+					settings.beforeSubmit.call( this, this, e );
 				}
 			});
 
@@ -307,7 +307,7 @@ setting rules for inputs in options
 				elem.parents('.row').find('.error-message').addClass('hidden');
 			}
 
-			settings.onValid.call( this, form, settings, elem );
+			settings.onValid.call( this, form, elem );
 
 			return true;
 		},
@@ -322,7 +322,7 @@ setting rules for inputs in options
 				elem.parents('.row').find('.error-message').removeClass('hidden');
 			}
 
-			settings.onInvalid.call( this, form, settings, elem );
+			settings.onInvalid.call( this, form, elem );
 
 			return false;
 		},
