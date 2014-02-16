@@ -7,6 +7,8 @@ custom classes
 test checkbox and select rules
 add element, which will be shown for valid rows
 add valid element for direct dom
+rewrite rules - notEmpty, string as a-zA-Z
+add negation to regex rules
 
 DOCS:
 show html examples

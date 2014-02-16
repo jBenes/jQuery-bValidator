@@ -13,7 +13,7 @@ jQuery form validator
 	
 	onFocusHideError: 	false			// Hide error after focusing input
 	onKeyUpValidate: 	false 			// When true, add extra on key up validation
-	domType:			'row'			// other options: 'direct'. Explained below
+	domType:			'row'			// another option: 'direct'. Explained below
 	onValid: 			function(form, element) {} // Function triggered after succesfully validated element
 	onInvalid:       	function(form, element) {} // Function triggered after unsuccesfully validated element
 	beforeSubmit: 		function(form, event) {}	// Function to fire before submitting valid form
@@ -50,12 +50,12 @@ You can choose html structure from two types (by **domType** option). In both ca
 ### Row structure ###
 
 	<form>
-		<div class="row"> // this element can be span or any other
-			<input type="text" data-bvStrict="rule">
+		<div **class="row"**> // this element can be span or any other
+			<input type="text" **data-bvStrict="rule"**>
 			<span class="error-class">Input is not valid</span>
 		</div>
-		<div class="row">
-			<input type="text" data-bvStrict="rule">
+		<div **class="row"**>
+			<input type="text" **data-bvStrict="rule"**>
 			<span class="error-class">Input is not valid</span>
 			<span class="valid-class">Input is valid</span>
 		</div>
@@ -64,23 +64,23 @@ You can choose html structure from two types (by **domType** option). In both ca
 If input is invalid, validator adds **error** class to a .row element.
 If input is valid, validator adds **valid** class to a .row element.
 You can name classes for error/valid messages by your desire, but remember to give it 'display: none' property and change it via rows .error/.valid classes.
-HTML structure doesn't have to be flat, you can inputs and messages wrap into another elements.
+HTML structure doesn't have to be flat, you can wrap inputs and messages into another elements.
 
 ### Direct structure ###
 
 	<form>
-		<label for="input1">First input</label>
-		<input type="text" name="input1" data-bvStrict="rule">
-		<span class="error-input1">First Input is not valid</span>
+		<label **for="input1"**>First input</label>
+		<input type="text" **name="input1"** **data-bvStrict="rule"**>
+		<span **class="error-input1"**>First Input is not valid</span>
 
-		<label for="input2">Second input</label>
-		<input type="text" name="input2" data-bvStrict="rule">
-		<span class="error-input2">Second Input is not valid</span>
+		<label **for="input2"**>Second input</label>
+		<input type="text" **name="input2"** **data-bvStrict="rule"**>
+		<span **class="error-input2"**>Second Input is not valid</span>
 	</form>
 
-If input is invalid, validator adds **error** class to an input, inputs label and error message associated by its name
-If input is valid, validator adds **valid** class to an input, inputs label and error message associated by its name
-HTML structure doesn't have to be flat, you can inputs, labels and messages wrap into another elements.
+If input is invalid, validator adds **error** class to an input, input labels and error message associated by its name.
+If input is valid, validator adds **valid** class to an input, input labels and error message associated by its name.
+HTML structure doesn't have to be flat, you can wrap inputs, labels and messages into another elements.
 Validator searches for labels and error messages only inside form element.
 
 ## Working with inputs ##
@@ -93,11 +93,11 @@ Validate input as email
 
 	data-bvStrict="email"
 
-Validate input as phone
+Validate input as czech phone number (9 digits)
 
 	data-bvStrict="phone"
 	
-Validate input as czech number
+Validate input as number
 
 	data-bvStrict="number"
 	
@@ -117,19 +117,19 @@ Input has to be empty
 
 	data-bvStrict="empty"
 	
-Input has to be string string
+Input has to be string
 
 	data-bvStrict="string"
 	
-Validate input as date dd.mm.yyyy
+Validate input as a date in format dd.mm.yyyy
 
 	data-bvStrict="date-d.m.yy"
 	
-Allways return false
+Always invalid input
 
 	data-bvStrict="false"
 	
-Allways return true
+Always valid input
 
 	data-bvStrict="true"
 	
@@ -187,7 +187,7 @@ Input has to be both string and number
 	
 	data-bvStrict="string&number"
 
-Input has to be phone or ( string and number ). **& has bigger priority than |**
+Input has to be phone or ( string and number ). **& has higher priority than |**
 	
 	data-bvStrict="phone|string&number"
 
@@ -198,19 +198,19 @@ You can combine rules as you want
 
 ### Other input attributes: ###
 
-Add prefix to value. It's removed before submitting form or after focusing input.
+Add prefix to a value. It's removed before submitting form and after focusing input.
 	
 	data-bvPrepend="\+420 "
 
-Add prefix to value. It's removed before submitting form or after focusing input.
+Add suffix to a value. It's removed before submitting form and after focusing input.
 
 	data-bvAppend=" kW"
 
-Placeholder. It's removed before submitting form or after focusing input.
+Placeholder. It's removed before submitting form and after focusing input.
 
 	data-bvSwitch="Fill name"
 
-Sets value to "@", if input is empty. It's removed before submitting form or after focusing input.
+Sets value to "@", if input is empty. It's removed before submitting form and after focusing input.
 
 	data-bvEmpty="@"
 
