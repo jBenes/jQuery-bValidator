@@ -9,6 +9,7 @@ add element, which will be shown for valid rows
 add valid element for direct dom
 rewrite rules - notEmpty, string as a-zA-Z
 add negation to regex rules
+rewrite date rules
 
 DOCS:
 show html examples

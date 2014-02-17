@@ -12,12 +12,12 @@ jQuery form validator
 ### Default options ###
 	
 	onFocusHideError: 	false			// Hide error after focusing input
-	onKeyUpValidate: 	false 			// When true, add extra on key up validation
+	onKeyUpValidate: 	false 			// If true, add extra on key up validation
 	domType:			'row'			// another option: 'direct'. Explained below
 	onValid: 			function(form, element) {} // Function triggered after succesfully validated element
 	onInvalid:       	function(form, element) {} // Function triggered after unsuccesfully validated element
-	beforeSubmit: 		function(form, event) {}	// Function to fire before submitting valid form
-	onSubmitFail: 		function(form, event) {}	// Function to fire when validation after submitting form fails
+	beforeSubmit: 		function(form, event) {}	// Function triggered before submitting valid form
+	onSubmitFail: 		function(form, event) {}	// Function triggered after trying to submit invalid form
 
 ### Init form with all options: ###
 	
@@ -45,17 +45,17 @@ jQuery form validator
 
 ## HTML structure ##
 
-You can choose html structure from two types (by **domType** option). In both cases, validation rules and other behavior is set by html data attributes.
+You can choose html structure from two types (by **domType** option). In both cases, validation rules and other behavior are set by html data attributes.
 
 ### Row structure ###
 
 	<form>
-		<div **class="row"**> // this element can be span or any other
-			<input type="text" **data-bvStrict="rule"**>
+		<div class="row"> // this element can be span or any other
+			<input type="text" data-bvStrict="rule">
 			<span class="error-class">Input is not valid</span>
 		</div>
-		<div **class="row"**>
-			<input type="text" **data-bvStrict="rule"**>
+		<div class="row">
+			<input type="text" data-bvStrict="rule">
 			<span class="error-class">Input is not valid</span>
 			<span class="valid-class">Input is valid</span>
 		</div>
@@ -69,13 +69,13 @@ HTML structure doesn't have to be flat, you can wrap inputs and messages into an
 ### Direct structure ###
 
 	<form>
-		<label **for="input1"**>First input</label>
-		<input type="text" **name="input1"** **data-bvStrict="rule"**>
-		<span **class="error-input1"**>First Input is not valid</span>
+		<label for="input1">First input</label>
+		<input type="text" name="input1" data-bvStrict="rule">
+		<span class="error-input1">First Input is not valid</span>
 
-		<label **for="input2"**>Second input</label>
-		<input type="text" **name="input2"** **data-bvStrict="rule"**>
-		<span **class="error-input2"**>Second Input is not valid</span>
+		<label for="input2">Second input</label>
+		<input type="text" name="input2" data-bvStrict="rule">
+		<span class="error-input2">Second Input is not valid</span>
 	</form>
 
 If input is invalid, validator adds **error** class to an input, input labels and error message associated by its name.
