@@ -2,6 +2,7 @@
 url: https://github.com/jBenes/bSlider
 
 TODO:
+move todos to text file
 callbacks - focus, focus out
 custom classes
 test checkbox and select rules
@@ -10,6 +11,7 @@ add valid element for direct dom
 rewrite rules - notEmpty, string as a-zA-Z
 add negation to regex rules
 rewrite date rules
+http://www.the-art-of-web.com/html/html5-form-validation/ - override html5 validations
 
 DOCS:
 show html examples
@@ -17,6 +19,8 @@ show html examples
 IMPLEMENT?
 custom cleant, valid and invalid functions
 options - disable error and valid action
+option for change of input type.. we have email rule => type="email" instead of text
+- option for escaping strings before submit
 
 DONE:
 DOM choices - row or name based
@@ -53,7 +57,7 @@ setting rules for inputs in options
 			// store settings to form node
 			form.data('bValidator', settings);
 			// choose elements which should be validated
-			var inputs = $('input[data-bvString], input[data-bvStrict], textarea', form);
+			var inputs = $('input[data-bvString], input[data-bvStrict], textarea[data-bvString], textarea[data-bvStrict]', form);
 			inputs.each(function (){
 				var input = $(this);
 				// bind focus in function
@@ -84,14 +88,14 @@ setting rules for inputs in options
 
 			//plugin.settings: $.extend({}, defaults, options);
 
-			// bind before submit validations 
+			// bind before submit validations
 			form.on('submit.bValidator', function(e) {
 				// obtain settings from form node
 				var settings = $(this).data('bValidator');
 				// assume that form is valid
 				var bValid = true;
 				// choose elements which should be validated
-				var inputs = $('input[data-bvString], input[data-bvStrict], textarea', $(this));
+				var inputs = $('input[data-bvString], input[data-bvStrict], textarea[data-bvString], textarea[data-bvStrict]', $(this));
 				// validate all inputs
 				inputs.each(function() {
 					// if input is invalid, remember it for breaking submitting form later
@@ -125,7 +129,7 @@ setting rules for inputs in options
 		getConfig: function(elem) {
 			var val = elem.val();
 			conf = {};
-			// switch value - erase inputs with this value. Fill value of empty inputs on focus out 
+			// switch value - erase inputs with this value. Fill value of empty inputs on focus out
 			conf['switchVal'] = (elem.attr('data-bvSwitch') == undefined ? '' : elem.attr('data-bvSwitch'));
 			// prepended value
 			conf['prepend'] = (elem.attr('data-bvPrepend') == undefined ? '' : elem.attr('data-bvPrepend'));
@@ -161,14 +165,14 @@ setting rules for inputs in options
 		 * @return input config
 		 */
 		initInput: function(elem) {
-			// get input clean value, input config 
+			// get input clean value, input config
 			conf = this.getConfig(elem);
 			// fix prepend escape chars
 			conf['prepend'] = conf['prepend'].replace(/\\|\?/g,'');
 			// fix append escape chars
 			conf['append'] = conf['append'].replace(/\\|\?/g,'');
 			// if element value is empty
-			if(!elem.val() || elem.val() == conf['empty'] || conf['newString'] == '') { 
+			if(!elem.val() || elem.val() == conf['empty'] || conf['newString'] == '') {
 				// and if both switchval and empty val are empty, add pendings
 				if(conf['empty'] == '' && conf['switchVal'] == '') elem.val(conf['prepend']+conf['append']);
 				// else if switchval is empty, apply Empty value
@@ -228,11 +232,11 @@ setting rules for inputs in options
 			$.each(rulesOr, function(indexOr, ruleOr) {
 
 				var rulesAnd = ruleOr.split('&');
-				
+
 				var resultAnd = true;
 
 				$.each(rulesAnd, function(indexAnd, ruleAnd) {
-					
+
 					var args = ruleAnd.split(':');
 
 					for (var i = 0; i < args.length; i++) {
@@ -253,7 +257,7 @@ setting rules for inputs in options
 					result = true;
 					return;
 				}
-				
+
 			});
 
 			return result;
@@ -274,7 +278,7 @@ setting rules for inputs in options
 			this.validations[arguments[0]] = {
 				func: arguments[1],
 			};
-			  
+
 			return this;
 		},
 
@@ -286,7 +290,7 @@ setting rules for inputs in options
 			this.transformations[arguments[0]] = {
 				func: arguments[1],
 			};
-			  
+
 			return this;
 		},
 
@@ -333,7 +337,7 @@ setting rules for inputs in options
 		destruct: function(form) {
 			form.unbind('.bValidator');
 
-			var inputs = $('input[data-bvString], input[data-bvStrict], textarea', form);
+			var inputs = $('input[data-bvString], input[data-bvStrict], textarea[data-bvString], textarea[data-bvStrict]', form);
 			inputs.unbind('.bValidator');
 
 			form.removeData('bValidator');
@@ -416,7 +420,7 @@ jQuery.bValidator
 	return true;
 })
 .validation('empty', function(value) {
-	return (value == ''); 
+	return (value == '');
 })
 .validation('if', function(value, args, elem) {
 	// arg[0] = rule name -> if
@@ -440,33 +444,33 @@ jQuery.bValidator
 
 })
 .validation('same', function(value, args) {
-	return (value == $('form [name="'+args[1]+'"]').val()); 
+	return (value == $('form [name="'+args[1]+'"]').val());
 })
 .validation('reg', function(value, args) {
 	return (value.match(args[1]) != null);
 })
-.validation('string', function(value) { 
+.validation('string', function(value) {
 	return (value.match(/^.+$/) != null);
 })
-.validation('email', function(value) { 
+.validation('email', function(value) {
 	return (value.match(/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/) != null && value.length != 0);
 })
-.validation('zip', function(value) { 
+.validation('zip', function(value) {
 	return (value.match(/^[0-9]{5}$/) != null);
 })
-.validation('city', function(value) { 
+.validation('city', function(value) {
 	return (value.match(/^.{2,}$/) != null);
 })
 .validation('date-d.m.yy', function(value) {
 	return (value.match(/^[0123]?[0-9]\.[01]?[0-9]\.[12][09][0-9][0-9]$/) != null);
 })
-.validation('nin', function(value) { 
+.validation('nin', function(value) {
 	return (value.match(/^[0-9]{6}\/[0-9]{3,4}$/) != null);
 })
-.validation('false', function(value) { 
+.validation('false', function(value) {
 	return false;
 })
-.validation('true', function(value) { 
+.validation('true', function(value) {
 	return true;
 })
 .validation('checked', function(value, args, elem) {
@@ -476,13 +480,13 @@ jQuery.bValidator
 	var same = 0;
 	var inc = 0;
 	var i;
-  
+
 	var pnumber = value;
 
 	if(!pnumber.match(/^[0-9]{9}$/)) {
 		return false;
 	}
-  
+
 	for(i = 4;i < 9;i++) {
 	if(i != 3 && pnumber.charAt(i) == pnumber.charAt(i - 1)) {
 		same++;
