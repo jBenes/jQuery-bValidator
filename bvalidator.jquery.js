@@ -9,7 +9,6 @@ add valid element for direct dom
 add negation to regex rules
 rewrite date rules
 http://www.the-art-of-web.com/html/html5-form-validation/ - override html5 validations
-fix input[type="file"] bug
 
 DOCS:
 show html examples
@@ -172,6 +171,10 @@ setting rules for inputs in options
 			conf['prepend'] = conf['prepend'].replace(/\\|\?/g,'');
 			// fix append escape chars
 			conf['append'] = conf['append'].replace(/\\|\?/g,'');
+
+			if(elem.is('[type="file"]')) {
+				return conf;
+			}
 			// if element value is empty
 			if(!elem.val() || elem.val() == conf['empty'] || conf['newString'] == '') {
 				// and if both switchval and empty val are empty, add pendings
@@ -196,8 +199,10 @@ setting rules for inputs in options
 		focus: function(elem, settings) {
 			conf = this.getConfig(elem);
 
-			if(elem.val() == conf['switchVal']) elem.val('');
-			else elem.val($.trim(conf['newString']));
+			if(!elem.is('[type="file"]')) {
+				if(elem.val() == conf['switchVal']) elem.val('');
+				else elem.val($.trim(conf['newString']));
+			}
 			//elem.removeClass('grey');
 			// hide error after focusing element
 			if(settings.onFocusHideError) {
