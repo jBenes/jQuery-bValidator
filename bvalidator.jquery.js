@@ -4,18 +4,18 @@ url: https://github.com/jBenes/bSlider
 TODO:
 move todos to text file
 callbacks - focus, focus out
-custom classes
 test checkbox and select rules
-add element, which will be shown for valid rows
 add valid element for direct dom
 add negation to regex rules
 rewrite date rules
 http://www.the-art-of-web.com/html/html5-form-validation/ - override html5 validations
+fix input[type="file"] bug
 
 DOCS:
 show html examples
 
 IMPLEMENT?
+add element, which will be shown for valid rows
 custom cleant, valid and invalid functions
 options - disable error and valid action
 option for change of input type.. we have email rule => type="email" instead of text
@@ -55,6 +55,8 @@ setting rules for inputs in options
 			plugin.destruct(form);
 			// store settings to form node
 			form.data('bValidator', settings);
+
+			$('.' + settings.errorMessageClass, form).hide();
 			// choose elements which should be validated
 			var inputs = $('input[data-bvString], input[data-bvStrict], textarea[data-bvString], textarea[data-bvStrict]', form);
 			inputs.each(function (){
@@ -302,7 +304,8 @@ setting rules for inputs in options
 				elem.parents('form')
 					.find('.error-'+elem.attr('name'))
 					.removeClass(settings.errorClass)
-					.removeClass(settings.validClass);
+					.removeClass(settings.validClass)
+					.hide();
 
 				elem.parents('form')
 					.find('label[for="'+elem.attr('name')+'"]')
@@ -313,7 +316,9 @@ setting rules for inputs in options
 
 				elem.parents('.' + settings.rowClass)
 					.removeClass(settings.errorClass)
-					.removeClass(settings.validClass);
+					.removeClass(settings.validClass)
+					.find('.' + settings.errorMessageClass)
+					.hide();
 			}
 		},
 
@@ -323,7 +328,8 @@ setting rules for inputs in options
 				elem.addClass(settings.validClass);
 
 				form.find('.error-'+elem.attr('name'))
-					.addClass(settings.validClass);
+					.addClass(settings.validClass)
+					.hide();
 
 				form.find('label[for="'+elem.attr('name')+'"]')
 					.addClass(settings.validClass);
@@ -334,8 +340,8 @@ setting rules for inputs in options
 					.addClass(settings.validClass);
 
 				elem.parents('.' + settings.rowClass)
-					.find('.error-message')
-					.addClass('hidden');
+					.find('.' + settings.errorMessageClass)
+					.hide();
 
 			}
 
@@ -350,7 +356,8 @@ setting rules for inputs in options
 				elem.addClass(settings.errorClass);
 
 				form.find('.error-'+elem.attr('name'))
-					.addClass(settings.errorClass);
+					.addClass(settings.errorClass)
+					.show();
 
 				form.find('label[for="'+elem.attr('name')+'"]')
 					.addClass(settings.errorClass);
@@ -361,8 +368,8 @@ setting rules for inputs in options
 					.addClass(settings.errorClass);
 
 				elem.parents('.' + settings.rowClass)
-					.find('.error-message')
-					.removeClass('hidden');
+					.find('.' + settings.errorMessageClass)
+					.show();
 
 			}
 
@@ -400,6 +407,7 @@ setting rules for inputs in options
 
 		var settings = $.extend({
 			errorClass: 'error',
+			errorMessageClass: 'error-message',
 			validClass: 'valid',
 			rowClass: 'row',
 			onFocusHideError: false, // TODO: little overhead, lookup for settings after each validation

@@ -13,6 +13,7 @@ jQuery form validator
 
 ```JavaScript
 errorClass: 		'error',
+errorMessageClass:	'error-message',
 validClass: 		'valid',
 rowClass: 			'row',
 onFocusHideError: 	false			// Hide error after focusing input
@@ -29,6 +30,7 @@ onSubmitFail: 		function(form, event) {}	// Function triggered after trying to s
 ```JavaScript
 $('form').bValidator({
 	errorClass: 		'alert',
+	errorMessageClass:	'alert-message',
 	validClass: 		'success',
 	rowClass: 			'form-controll',
 	onFocusHideError: false, // no reason to allow in combination with onKeyUpValidate = true
@@ -63,12 +65,11 @@ You can choose html structure from two types (by **domType** option). In both ca
 <form>
 	<div class="row"> // this element can be span or any other
 		<input type="text" data-bvStrict="rule">
-		<span class="error-class">Input is not valid</span>
+		<span class="error-message">Input is not valid</span>
 	</div>
 	<div class="row">
 		<input type="text" data-bvStrict="rule">
-		<span class="error-class">Input is not valid</span>
-		<span class="valid-class">Input is valid</span>
+		<span class="error-message">Input is not valid</span>
 	</div>
 </form>
 ```
@@ -84,11 +85,11 @@ HTML structure doesn't have to be flat, you can wrap inputs and messages into an
 <form>
 	<label for="input1">First input</label>
 	<input type="text" name="input1" data-bvStrict="rule">
-	<span class="error-input1">First Input is not valid</span>
+	<span class="error-message error-input1">First Input is not valid</span>
 
 	<label for="input2">Second input</label>
 	<input type="text" name="input2" data-bvStrict="rule">
-	<span class="error-input2">Second Input is not valid</span>
+	<span class="error-message error-input2">Second Input is not valid</span>
 </form>
 ```
 
