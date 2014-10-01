@@ -8,7 +8,6 @@ custom classes
 test checkbox and select rules
 add element, which will be shown for valid rows
 add valid element for direct dom
-rewrite rules - notEmpty, string as a-zA-Z
 add negation to regex rules
 rewrite date rules
 http://www.the-art-of-web.com/html/html5-form-validation/ - override html5 validations
@@ -296,22 +295,48 @@ setting rules for inputs in options
 
 		clean: function(elem, settings) {
 			if(settings.domType == 'direct') {
-				elem.removeClass('error').removeClass('valid');
-				elem.parents('form').find('.error-'+elem.attr('name')).removeClass('error').removeClass('valid');
-				elem.parents('form').find('label[for="'+elem.attr('name')+'"]').removeClass('error').removeClass('valid');
+
+				elem.removeClass(settings.errorClass)
+					.removeClass(settings.validClass);
+
+				elem.parents('form')
+					.find('.error-'+elem.attr('name'))
+					.removeClass(settings.errorClass)
+					.removeClass(settings.validClass);
+
+				elem.parents('form')
+					.find('label[for="'+elem.attr('name')+'"]')
+					.removeClass(settings.errorClass)
+					.removeClass(settings.validClass);
+
 			} else {
-				elem.parents('.row').removeClass('error').removeClass('valid');
+
+				elem.parents('.' + settings.rowClass)
+					.removeClass(settings.errorClass)
+					.removeClass(settings.validClass);
 			}
 		},
 
 		valid: function(form, settings, elem) {
 			if(settings.domType == 'direct') {
-				elem.addClass('valid');
-				form.find('.error-'+elem.attr('name')).addClass('valid');
-				form.find('label[for="'+elem.attr('name')+'"]').addClass('valid');
+
+				elem.addClass(settings.validClass);
+
+				form.find('.error-'+elem.attr('name'))
+					.addClass(settings.validClass);
+
+				form.find('label[for="'+elem.attr('name')+'"]')
+					.addClass(settings.validClass);
+
 			} else {
-				elem.parents('.row').addClass('valid');
-				elem.parents('.row').find('.error-message').addClass('hidden');
+
+				elem.parents('.' + settings.rowClass)
+					.addClass(settings.validClass);
+
+				elem.parents('.' + settings.rowClass)
+					.find('.error-message')
+					.addClass('hidden');
+
 			}
 
 			settings.onValid.call( this, form, elem );
@@ -321,12 +346,24 @@ setting rules for inputs in options
 
 		invalid: function(form, settings, elem) {
 			if(settings.domType == 'direct') {
-				elem.addClass('error');
-				form.find('.error-'+elem.attr('name')).addClass('error');
-				form.find('label[for="'+elem.attr('name')+'"]').addClass('error');
+
+				elem.addClass(settings.errorClass);
+
+				form.find('.error-'+elem.attr('name'))
+					.addClass(settings.errorClass);
+
+				form.find('label[for="'+elem.attr('name')+'"]')
+					.addClass(settings.errorClass);
+
 			} else {
-				elem.parents('.row').addClass('error');
-				elem.parents('.row').find('.error-message').removeClass('hidden');
+
+				elem.parents('.' + settings.rowClass)
+					.addClass(settings.errorClass);
+
+				elem.parents('.' + settings.rowClass)
+					.find('.error-message')
+					.removeClass('hidden');
+
 			}
 
 			settings.onInvalid.call( this, form, elem );
@@ -362,6 +399,9 @@ setting rules for inputs in options
 		}
 
 		var settings = $.extend({
+			errorClass: 'error',
+			validClass: 'valid',
+			rowClass: 'row',
 			onFocusHideError: false, // TODO: little overhead, lookup for settings after each validation
 			onKeyUpValidate: false,
 			domType: 'row', // other options: 'direct'
@@ -453,7 +493,7 @@ jQuery.bValidator
 	return (value.match(/^.+$/) != null);
 })
 .validation('string', function(value) {
-	return (value.match(/^a-zA-Z*$/) != null);
+	return (value.match(/^[a-zA-Z]*$/) != null);
 })
 .validation('email', function(value) {
 	return (value.match(/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/) != null && value.length != 0);
