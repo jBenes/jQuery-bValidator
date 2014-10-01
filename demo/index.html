@@ -22,7 +22,7 @@
 				<h2>Form with row structure</h2>
 				<div class="row form-group">
 					<label for="input0">Name</label>
-					<input class="form-control" name="input0" type="text" data-bvStrict="string" data-bvSwitch="Fill your name">
+					<input class="form-control" name="input0" type="text" data-bvStrict="notEmpty" data-bvSwitch="Fill your name">
 					<div class="help-block error-message">Fill your name</div>
 				</div>
 				<div class="row form-group">
@@ -84,10 +84,20 @@
 				</div>
 
 				<button type="submit" class="btn btn-default">Submit</button>
-				
+
 				<div class="help-block error-message error-input1">Fill e-mail or phone</div>
 				<span class="help-block error-message error-input2">Number is not valid</span>
 				<span class="help-block error-message error-cond">You have to check it</span>
+			</form>
+
+			<form action="" id="form-row-other">
+				<h2>Other examples in form with row structure</h2>
+				<div class="row form-group">
+					<label for="input0">String</label>
+					<input class="form-control" name="input0" type="text" data-bvStrict="string" data-bvSwitch="Enter string">
+					<div class="help-block error-message">This must be a string</div>
+				</div>
+				<button type="submit" class="btn btn-default">Submit</button>
 			</form>
 
 		</div>
@@ -98,6 +108,8 @@
 		<script type="text/javascript">
 			$(function(){
 				$('#form-row').bValidator();
+
+				$('#form-row-other').bValidator();
 
 				$('#form-direct').bValidator({
 					onFocusHideError: 	true,

@@ -6,11 +6,11 @@ jQuery form validator
 ## Handling form ##
 
 ### Init form: ###
-	
+
 	$('form').bValidator();
 
 ### Default options ###
-	
+
 	onFocusHideError: 	false			// Hide error after focusing input
 	onKeyUpValidate: 	false 			// If true, add extra on key up validation
 	domType:			'row'			// another option: 'direct'. Explained below
@@ -20,7 +20,7 @@ jQuery form validator
 	onSubmitFail: 		function(form, event) {}	// Function triggered after trying to submit invalid form
 
 ### Init form with all options: ###
-	
+
 	$('form').bValidator({
 		onFocusHideError: false, // no reason to allow in combination with onKeyUpValidate = true
 		onKeyUpValidate: true,
@@ -96,52 +96,56 @@ Validate input as email
 Validate input as czech phone number (9 digits)
 
 	data-bvStrict="phone"
-	
+
 Validate input as number
 
 	data-bvStrict="number"
-	
+
 Number > 1
 
 	data-bvStrict="number:1"
-	
+
 Number < 10
 
 	data-bvStrict="number::10"
-	
+
 Number between 1 and 10
 
 	data-bvStrict="number:1:10"
-	
+
+Input can't be empty
+
+	data-bvStrict="notEmpty"
+
 Input has to be empty
 
 	data-bvStrict="empty"
-	
+
 Input has to be string
 
 	data-bvStrict="string"
-	
+
 Validate input as a date in format dd.mm.yyyy
 
 	data-bvStrict="date-d.m.yy"
-	
+
 Always invalid input
 
 	data-bvStrict="false"
-	
+
 Always valid input
 
 	data-bvStrict="true"
-	
+
 Checkbox has to be checked
 
 	data-bvStrict="checked"
-	
+
 Validate input by regular expression
 
 	data-bvStrict="reg:^[\d]{2,3}$"
-	
-If regular expression contains **|** or **&**, it has to be inside double brackets **{{** **}}** 
+
+If regular expression contains **|** or **&**, it has to be inside double brackets **{{** **}}**
 
 	data-bvStrict="reg:{{^him|her$}}"
 
@@ -166,29 +170,29 @@ Adding regular expression rule. Whole rule has to be inside double brackets **{{
 
 If input with name **service** has value **4**, rule validates input by rule **email**
 If **service** is not valid, rule returns **true**
-	
+
 	data-bvStrict="ifv:service:4:email"
 
 This does the same as
-	
+
 	data-bvStrict="if:service:{{reg:^4$}}:email"
 
 ### Combinating rules ###
 
 Input has to be phone or email
-	
+
 	data-bvStrict="phone|email"
 
 Input has to be empty or valid email
-	
+
 	data-bvStrict="empty|email"
 
 Input has to be both string and number
-	
+
 	data-bvStrict="string&number"
 
 Input has to be phone or ( string and number ). **& has higher priority than |**
-	
+
 	data-bvStrict="phone|string&number"
 
 You can combine rules as you want
@@ -199,7 +203,7 @@ You can combine rules as you want
 ### Other input attributes: ###
 
 Add prefix to a value. It's removed before submitting form and after focusing input.
-	
+
 	data-bvPrepend="\+420 "
 
 Add suffix to a value. It's removed before submitting form and after focusing input.

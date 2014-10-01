@@ -449,8 +449,11 @@ jQuery.bValidator
 .validation('reg', function(value, args) {
 	return (value.match(args[1]) != null);
 })
-.validation('string', function(value) {
+.validation('notEmpty', function(value) {
 	return (value.match(/^.+$/) != null);
+})
+.validation('string', function(value) {
+	return (value.match(/^a-zA-Z*$/) != null);
 })
 .validation('email', function(value) {
 	return (value.match(/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/) != null && value.length != 0);
