@@ -3,17 +3,13 @@ url: https://github.com/jBenes/bSlider
 
 TODO:
 move todos to text file
-callbacks - focus, focus out
 test checkbox and select rules
-add valid element for direct dom
 add negation to regex rules
 rewrite date rules
-http://www.the-art-of-web.com/html/html5-form-validation/ - override html5 validations
-
-DOCS:
-show html examples
 
 IMPLEMENT?
+http://www.the-art-of-web.com/html/html5-form-validation/ - override html5 validations
+add valid element for direct dom
 add element, which will be shown for valid rows
 custom cleant, valid and invalid functions
 options - disable error and valid action
@@ -62,8 +58,11 @@ setting rules for inputs in options
 				var input = $(this);
 				// bind focus in function
 				input.on('focusin.bValidator', function() {
-					var settings = $(this).parents('form').data('bValidator');
-					plugin.focus($(this), settings);
+					var elem = $(this);
+					var form = elem.parents('form');
+					var settings = form.data('bValidator');
+					plugin.focus(elem, settings);
+					settings.onFocusIn.call( this, form, elem );
 				});
 
 				// choose event for binding validation action - change for checkboxes and selects. Other inputs focusout
@@ -73,12 +72,18 @@ setting rules for inputs in options
 				}
 				// bind validation event
 				input.on(method+'.bValidator', function() {
-					plugin.validate($(this));
+					var elem = $(this);
+					var form = elem.parents('form');
+					plugin.validate(elem);
+					settings.onFocusOut.call( this, form, elem );
 				});
 
 				if(settings.onKeyUpValidate) {
 					input.on('keyup.bValidator', function() {
-						plugin.validate($(this));
+						var elem = $(this);
+						var form = elem.parents('form');
+						plugin.validate(elem);
+						settings.onKeyUp.call( this, form, elem );
 					});
 				}
 
@@ -421,7 +426,10 @@ setting rules for inputs in options
 			onValid: function() {},
 			onInvalid: function() {},
 			beforeSubmit: function() {},
-			onSubmitFail: function() {}
+			onSubmitFail: function() {},
+			onFocusIn: function() {},
+			onFocusOut: function() {},
+			onKeyUp: function() {}
 		}, options );
 
 		return this.each(function() {

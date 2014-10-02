@@ -125,6 +125,15 @@
 					},
 					onSubmitFail:       function(form, event) {
 						alert('Form is NOT valid');
+					},
+					onFocusIn: function(form, element) {
+						console.log('Input focused in');
+					},
+					onFocusOut: function(form, element) {
+						console.log('Input focused out');
+					},
+					onKeyUp: function(form, element) {
+						console.log('Key pressed over input');
 					}
 				});
 			});

@@ -23,6 +23,9 @@ onValid: 			function(form, element) {} // Function triggered after succesfully v
 onInvalid:       	function(form, element) {} // Function triggered after unsuccesfully validated element
 beforeSubmit: 		function(form, event) {}	// Function triggered before submitting valid form
 onSubmitFail: 		function(form, event) {}	// Function triggered after trying to submit invalid form
+onFocusIn: 			function(form, element) {}	// Triggered after focusing element
+onFocusOut: 		function(form, element) {}	// Triggered after focusing out of element
+onKeyUp: 			function(form, element) {}	// Callback after pressing key when is input focused, only for onKeyUpValidate=true
 ```
 
 ### Init form with all options: ###
@@ -47,6 +50,15 @@ $('form').bValidator({
 	},
 	beforeSubmit: function(form, event) {
 		console.log('Validation success');
+	},
+	onFocusIn: function(form, element) {
+		console.log('Input focused in');
+	},
+	onFocusOut: function(form, element) {
+		console.log('Input focused out');
+	},
+	onKeyUp: function(form, element) {
+		console.log('Key pressed over input');
 	}
 });
 ```
