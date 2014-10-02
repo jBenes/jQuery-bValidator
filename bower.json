@@ -1,0 +1,28 @@
+{
+  "name": "bValidator",
+  "version": "0.1.0",
+  "homepage": "https://github.com/jBenes/bValidator",
+  "authors": [
+    "Benes <benes@kodarna.cz>"
+  ],
+  "description": "jQuery form validator with powerful validation rules",
+  "main": "bvalidator.jquery.min.js",
+  "keywords": [
+    "jQuery",
+    "form",
+    "validate",
+    "validation",
+    "JavaScript"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": ">=1.7"
+  }
+}
