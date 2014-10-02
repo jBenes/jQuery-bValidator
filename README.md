@@ -152,9 +152,9 @@ Input has to be string
 
 	data-bvStrict="string"
 
-Validate input as a date in format dd.mm.yyyy
+Validate input as a date (wildcards allowed in format string: d, dd, m, mm, yy, yyyy. E.g. `d/m/yy`, `d. m. yyyy`, `dd-mm-yyyy`, `yy, m, d`)
 
-	data-bvStrict="date-d.m.yy"
+	data-bvStrict="date:format"
 
 Always invalid input
 

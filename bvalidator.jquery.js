@@ -5,7 +5,8 @@ TODO:
 move todos to text file
 test checkbox and select rules
 add negation to regex rules
-rewrite date rules
+better date validator
+time validator
 
 IMPLEMENT?
 http://www.the-art-of-web.com/html/html5-form-validation/ - override html5 validations
@@ -525,8 +526,21 @@ jQuery.bValidator
 .validation('city', function(value) {
 	return (value.match(/^.{2,}$/) != null);
 })
-.validation('date-d.m.yy', function(value) {
-	return (value.match(/^[0123]?[0-9]\.[01]?[0-9]\.[12][09][0-9][0-9]$/) != null);
+.validation('date', function(value, args) {
+	console.log(args[1]);
+	var mask = regex = args[1];
+	var matches = day = month = year = null;
+
+	regex = regex.replace('mm', '[01][0-9]');
+	regex = regex.replace('m', '[1]?[0-9]');
+	regex = regex.replace('dd', '[0123][0-9]');
+	regex = regex.replace('d', '[0123]?[0-9]');
+	regex = regex.replace('yyyy', '[0-9]{4}');
+	regex = regex.replace('yy', '[0-9]{2}');
+	var pattern = '^' + regex + '$';
+	var re = new RegExp(pattern, '');
+
+	return (!!value.match(re));
 })
 .validation('nin', function(value) {
 	return (value.match(/^[0-9]{6}\/[0-9]{3,4}$/) != null);
