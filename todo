@@ -1,0 +1,23 @@
+TODO:
+move todos to text file
+test checkbox and select rules
+add negation to regex rules
+better date validator
+time validator
+
+IMPLEMENT?
+http://www.the-art-of-web.com/html/html5-form-validation/ - override html5 validations
+add valid element for direct dom
+add element, which will be shown for valid rows
+custom cleant, valid and invalid functions
+options - disable error and valid action
+option for change of input type.. we have email rule => type="email" instead of text
+- option for escaping strings before submit
+
+DONE:
+DOM choices - row or name based
+
+REJECTED:
+generate error messages
+setting rules by classes
+setting rules for inputs in options

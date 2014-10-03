@@ -1,7 +1,7 @@
 {
-  "name": "bValidator",
-  "version": "0.1.2",
-  "homepage": "https://github.com/jBenes/bValidator",
+  "name": "jquery-bvalidator",
+  "version": "0.1.3",
+  "homepage": "https://github.com/jBenes/jQuery-bValidator",
   "authors": [
     "Benes <benes@kodarna.cz>"
   ],

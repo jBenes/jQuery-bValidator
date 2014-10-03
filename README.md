@@ -1,7 +1,21 @@
-bValidator
-==========
+jQuery-bValidator
+=================
 
 jQuery form validator
+
+## Installation ##
+
+Install via bower
+
+```
+bower install --save jquery-bvalidator
+```
+
+Link library
+
+```html
+<script src="bower_compoents/jquery-bvalidator/bvalidator.jquery.min.js"></script>
+```
 
 ## Handling form ##
 
