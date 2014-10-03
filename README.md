@@ -79,7 +79,9 @@ $('form').bValidator({
 
 ### Remove validations: ###
 
-	$('form').bValidator('destruct');
+```JavaScript
+$('form').bValidator('destruct');
+```
 
 ## HTML structure ##
 
@@ -132,162 +134,232 @@ You can set custom validation rule by adding **data-bvStrict** attribute to the 
 
 Validate input as email
 
-	data-bvStrict="email"
+```html
+data-bvStrict="email"
+```
 
 Validate input as czech phone number (9 digits)
 
-	data-bvStrict="phone"
+```html
+data-bvStrict="phone"
+```
 
 Validate input as number
 
-	data-bvStrict="number"
+```html
+data-bvStrict="number"
+```
 
 Number > 1
 
-	data-bvStrict="number:1"
+```html
+data-bvStrict="number:1"
+```
 
 Number < 10
 
-	data-bvStrict="number::10"
+```html
+data-bvStrict="number::10"
+```
 
 Number between 1 and 10
 
-	data-bvStrict="number:1:10"
+```html
+data-bvStrict="number:1:10"
+```
 
 Input can't be empty
 
-	data-bvStrict="notEmpty"
+```html
+data-bvStrict="notEmpty"
+```
 
 Input has to be empty
 
-	data-bvStrict="empty"
+```html
+data-bvStrict="empty"
+```
 
 Input has to be string
 
-	data-bvStrict="string"
+```html
+data-bvStrict="string"
+```
 
 Validate input as a date (wildcards allowed in format string: d, dd, m, mm, yy, yyyy. E.g. `d/m/yy`, `d. m. yyyy`, `dd-mm-yyyy`, `yy, m, d`)
 
-	data-bvStrict="date:format"
+```html
+data-bvStrict="date:format"
+```
 
 Always invalid input
 
-	data-bvStrict="false"
+```html
+data-bvStrict="false"
+```
 
 Always valid input
 
-	data-bvStrict="true"
+```html
+data-bvStrict="true"
+```
 
 Checkbox has to be checked
 
-	data-bvStrict="checked"
+```html
+data-bvStrict="checked"
+```
 
 Validate input by regular expression
 
-	data-bvStrict="reg:^[\d]{2,3}$"
+```html
+data-bvStrict="reg:^[\d]{2,3}$"
+```
 
 If regular expression contains **|** or **&**, it has to be inside double brackets **{{** **}}**
 
-	data-bvStrict="reg:{{^him|her$}}"
+```html
+data-bvStrict="reg:{{^him|her$}}"
+```
 
 ### Connected rules ###
 
 Input has to have same value as input with name **password**
 
-	data-bvStrict="same:password"
+```html
+data-bvStrict="same:password"
+```
 
 ### Conditions ###
 
 If input with name **service** is valid by rule **checked**, rule validates input by rule **email**
 If **service** is not valid, rule returns **true**
 
-	data-bvStrict="if:service:checked:email"
+```html
+data-bvStrict="if:service:checked:email"
+```
 
 Adding regular expression rule. Whole rule has to be inside double brackets **{{** **}}**, not just it's parameter
 
-	data-bvStrict="if:service:checked:{{reg:^him|her$}}"
+```html
+data-bvStrict="if:service:checked:{{reg:^him|her$}}"
 
-	data-bvStrict="if:type:{{reg:^4$}}:email"
+data-bvStrict="if:type:{{reg:^4$}}:email"
+```
 
 If input with name **service** has value **4**, rule validates input by rule **email**
 If **service** is not valid, rule returns **true**
 
-	data-bvStrict="ifv:service:4:email"
+```html
+data-bvStrict="ifv:service:4:email"
+```
 
 This does the same as
 
-	data-bvStrict="if:service:{{reg:^4$}}:email"
+```html
+data-bvStrict="if:service:{{reg:^4$}}:email"
+```
 
 ### Combinating rules ###
 
 Input has to be phone or email
 
-	data-bvStrict="phone|email"
+```html
+data-bvStrict="phone|email"
+```
 
 Input has to be empty or valid email
 
-	data-bvStrict="empty|email"
+```html
+data-bvStrict="empty|email"
+```
 
 Input has to be both string and number
 
-	data-bvStrict="string&number"
+```html
+data-bvStrict="string&number"
+```
 
 Input has to be phone or ( string and number ). **& has higher priority than |**
 
-	data-bvStrict="phone|string&number"
+```html
+data-bvStrict="phone|string&number"
+```
 
 You can combine rules as you want
 
-	data-bvStrict="if:type:{{reg:^2$}}:email|if:type:{{reg:^4$}}:phone|same:password&reg:{{^[\d]{2,3}$}}"
+```html
+data-bvStrict="if:type:{{reg:^2$}}:email|if:type:{{reg:^4$}}:phone|same:password&reg:{{^[\d]{2,3}$}}"
+```
 
 
 ### Other input attributes: ###
 
 Add prefix to a value. It's removed before submitting form and after focusing input.
 
-	data-bvPrepend="\+420 "
+```html
+data-bvPrepend="\+420 "
+```
 
 Add suffix to a value. It's removed before submitting form and after focusing input.
 
-	data-bvAppend=" kW"
+```html
+data-bvAppend=" kW"
+```
 
 Placeholder. It's removed before submitting form and after focusing input.
 
-	data-bvSwitch="Fill name"
+```html
+data-bvSwitch="Fill name"
+```
 
 Sets value to "@", if input is empty. It's removed before submitting form and after focusing input.
 
-	data-bvEmpty="@"
+```html
+data-bvEmpty="@"
+```
 
 Erasing spaces from value
 
-	data-bvTransform="noSpaces"
+```html
+data-bvTransform="noSpaces"
+```
 
 
 ### Manually validate inputs: ###
 
-	$('inputs').bValidator('validate');
+```Javascript
+$('inputs').bValidator('validate');
+```
 
 
 ### Check if inputs are valid ###
 
 Returns false if at least one is invalid, otherwise true. This method does not display errors.
 
-	$('inputs').bValidator('isValid');
+```Javascript
+$('inputs').bValidator('isValid');
+```
 
 Validate with different rule
 
-	$('inputs').bValidator('isValid', Array('email'));
+```Javascript
+$('inputs').bValidator('isValid', Array('email'));
+```
 
 ## Custom rules ##
 
-	jQuery.bValidator.validation('rule_name', function(value, args, elem) {
-		return true/false;
-	});
+```Javascript
+jQuery.bValidator.validation('rule_name', function(value, args, elem) {
+	return true/false;
+});
+```
 
 ## Custom transformer ##
 
-	jQuery.bValidator.transformation('transformation_name', function(value) {
-		return new_value;
-	});
+```Javascript
+jQuery.bValidator.transformation('transformation_name', function(value) {
+	return new_value;
+});
+```
 
