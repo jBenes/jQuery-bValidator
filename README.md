@@ -14,7 +14,7 @@ bower install --save jquery-bvalidator
 Link library
 
 ```html
-<script src="bower_compoents/jquery-bvalidator/bvalidator.jquery.min.js"></script>
+<script src="bower_components/jquery-bvalidator/bvalidator.jquery.min.js"></script>
 ```
 
 ## Handling form ##
