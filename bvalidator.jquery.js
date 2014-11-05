@@ -30,7 +30,7 @@ url: https://github.com/jBenes/jQuery-bValidator
 
 			$('.' + settings.errorMessageClass, form).hide();
 			// choose elements which should be validated
-			var inputs = $('input[data-bvString], input[data-bvStrict], textarea[data-bvString], textarea[data-bvStrict]', form);
+			var inputs = $('input[data-bvString], input[data-bvStrict], select[data-bvStrict], textarea[data-bvString], textarea[data-bvStrict]', form);
 			inputs.each(function (){
 				var input = $(this);
 				// bind focus in function
@@ -77,7 +77,7 @@ url: https://github.com/jBenes/jQuery-bValidator
 				// assume that form is valid
 				var bValid = true;
 				// choose elements which should be validated
-				var inputs = $('input[data-bvString], input[data-bvStrict], textarea[data-bvString], textarea[data-bvStrict]', $(this));
+				var inputs = $('input[data-bvString], input[data-bvStrict], select[data-bvStrict], textarea[data-bvString], textarea[data-bvStrict]', $(this));
 				// validate all inputs
 				inputs.each(function() {
 					// if input is invalid, remember it for breaking submitting form later
